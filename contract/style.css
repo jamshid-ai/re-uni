@@ -1,0 +1,37 @@
+* {
+  font-family: "Times New Roman", Times, serif;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+.main-title {
+  font-size: 20px;
+  font-weight: bold;
+}
+h3 {
+  font-size: 15px;
+}
+p, li, td {
+  font-size: 12px;
+  text-align: justify;
+  padding-left: 2px !important;
+}
+.rector-name {
+  position: relative;
+}
+.pecat-wrapper {
+  position: relative;
+}
+.pecat {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  object-fit: cover;
+  top: -150px;
+  left: -100px;
+  z-index: -1;
+}
+
+table, th, td {
+  border: 1px solid #3d3d3d;
+  border-collapse: collapse;
+}
