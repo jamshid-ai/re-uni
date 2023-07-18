@@ -8,10 +8,10 @@
   font-weight: bold;
 }
 h3 {
-  font-size: 15px;
+  font-size: 12px;
 }
 p, li, td {
-  font-size: 12px;
+  font-size: 10px;
   text-align: justify;
   padding-left: 2px !important;
 }
