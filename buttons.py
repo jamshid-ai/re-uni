@@ -169,4 +169,5 @@ class Keyboards:
         ]
         kb = ReplyKeyboardMarkup(resize_keyboard=True)
         kb.add(*btns)
+        kb.add(KeyboardButton("BOG'LANISH"))
         return kb
