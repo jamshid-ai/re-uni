@@ -50,7 +50,7 @@ async def send_welcome(message: types.Message):
 
     kb = await Keyboards.phone_kb()
     await Register.phone.set()
-    await bot.send_message(message.chat.id, "Assalomu alaykum, RENAISSANCE UNIVERSITY ga xush kelibsiz! Iltimos, universitetga ro'yxatdan o'tish uchun telefon raqamingizni yuboring\nNamuna: +998901112233", reply_markup=kb)
+    await bot.send_message(message.chat.id, "Assalomu alaykum, RENAISSANCE UNIVERSITY ga xush kelibsiz! Iltimos, universitetga ro'yxatdan o'tish uchun telefon raqamingizni yuboring\nNamuna: +998333582024", reply_markup=kb)
 
 
 @dp.message_handler(state='*', commands='cancel')
@@ -74,7 +74,7 @@ async def cancel_handler(message: types.Message, state: FSMContext):
 async def start_state(message: types.message):
     kb = await Keyboards.phone_kb()
     await Register.phone.set()
-    await bot.send_message(message.chat.id, "Ro'yxatdan o'tish uchun iltimos telefon raqamingizni kiriting!\nNamuna: +998901112233", reply_markup=kb)
+    await bot.send_message(message.chat.id, "Ro'yxatdan o'tish uchun iltimos telefon raqamingizni kiriting!\nNamuna: +998333582024", reply_markup=kb)
 
 
 @dp.message_handler(state=Register.phone,
@@ -91,7 +91,7 @@ async def get_phone(message: types.Message, state: FSMContext):
         kb = await Keyboards.edu_lang_kb()
         await bot.send_message(message.chat.id, "Iltimos, ta'lim tilini tanlang", reply_markup=kb)
     else:
-        await bot.send_message(message.chat.id, 'Iltimos to\'g\'ri raqam kiriting!\nNamuna: +998901112233')
+        await bot.send_message(message.chat.id, 'Iltimos to\'g\'ri raqam kiriting!\nNamuna: +998333582024')
 
 
 @dp.message_handler(state=Register.edu_lang)
@@ -99,7 +99,7 @@ async def get_edu_lang(message: types.Message, state: FSMContext):
     if message.text == "🔙ORQAGA":
         await Register.phone.set()
         kb = await Keyboards.phone_kb()
-        await bot.send_message(message.chat.id, "Ro'yhatdan o'tish uchun iltimos telefon raqamingizni kiriting!\nNamuna: +998901112233", reply_markup=kb)
+        await bot.send_message(message.chat.id, "Ro'yhatdan o'tish uchun iltimos telefon raqamingizni kiriting!\nNamuna: +998333582024", reply_markup=kb)
     else:
         await state.update_data(edu_lang=message.text)
         await Register.next()
