@@ -23,8 +23,8 @@ p, li, td {
 }
 .pecat {
   position: absolute;
-  width: 250px;
-  height: 250px;
+  width: 245px;
+  height: 245px;
   object-fit: cover;
   top: -150px;
   left: -100px;
