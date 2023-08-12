@@ -50,7 +50,16 @@ contract_fee = {
 congrats_message = """HURMATLI TALABA! TABRIKLAYMIZ!
 Siz, RENAISSANCE UNIVERSITY oliy ta'lim muassasasiga o'qishga qabul qilindingiz.
 
-Qo'shimcha ma'lumot uchun :
-Telefon raqami: +998333372023
-Telefon raqami: +998333582024
-Telegram: https://t.me/renaissance_university_qabul"""
+Qo'shimcha ma'lumot uchun:
+Tel +998333372023
+Tel +998333582024
+Tel +998333202324
+Tel +998332022324
+
+Telegram:
+@ruuniver1
+@runiver1
+@ruuniver_menejer
+
+Telegram kanal: 
+https://t.me/renaissance_university_qabul"""
