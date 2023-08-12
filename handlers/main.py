@@ -5,21 +5,16 @@ from aiogram.dispatcher.filters import Text
 
 from loader import dp, bot
 
-about_photo = os.getenv("PHOTO")
-about_video = os.getenv("VIDEO")
-
 
 @dp.message_handler(Text(equals="BIZ HAQIMIZDA"))
 async def about_uni(message: types.Message):
+    about_photo = types.InputFile('./about/about.jpg', "Media")
+    about_video = types.InputFile('./about/video.mp4', "Media")
 
-    # with open('./about/about.jpg', 'rb') as photo:
-    #     await message.reply_photo(photo)
-    # with open('./about/video.mp4', 'rb') as video:
-    #     await message.reply_video(video)
-
-
+    await types.ChatActions.upload_photo()
     await bot.send_photo(message.chat.id,
                          photo=about_photo)
+    await types.ChatActions.upload_video()
     await bot.send_video(message.chat.id,
                          video=about_video,
                          caption="Renaissance university haqida batafsil")

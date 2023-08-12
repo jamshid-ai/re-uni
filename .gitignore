@@ -2,5 +2,4 @@ venv/
 env/
 .env
 __pycache__
-about
 contract_id.txt
