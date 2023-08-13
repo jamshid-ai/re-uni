@@ -171,3 +171,10 @@ class Keyboards:
         kb.add(*btns)
         kb.add(KeyboardButton("BOG'LANISH"))
         return kb
+
+    @staticmethod
+    async def message_confirm():
+        kb = InlineKeyboardMarkup(row_width=2)
+        kb.add(InlineKeyboardButton("To'g'ri✅", callback_data='ok'),
+               InlineKeyboardButton("Noto'g'ri❌", callback_data='no'))
+        return kb

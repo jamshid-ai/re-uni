@@ -21,3 +21,8 @@ def get_user(tg_id):
     curr = conn.cursor()
     curr.execute("SELECT * FROM contact WHERE tg_id=%s", (tg_id,))
     return curr.fetchall()
+
+def get_all_users():
+    curr = conn.cursor()
+    curr.execute("SELECT * FROM contact;")
+    return curr.fetchall()
