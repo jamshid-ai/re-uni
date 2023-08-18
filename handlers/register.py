@@ -157,9 +157,16 @@ async def get_full_name(message: types.Message, state: FSMContext):
                 kb = await Keyboards.edu_majors_kb(sirtqi_rus=True)
         await bot.send_message(message.chat.id, "Iltimos, ta'lim yo'nalishini tanglang", reply_markup=kb)
     else:
+        with open(f'{os.path.abspath("contract_id.txt")}', 'r') as f:
+            contract_id = f.read()
+        formatted_contract_id = str(int(contract_id)+1).zfill(7)
         await state.update_data(full_name=message.text)
         async with state.proxy() as data:
-            text = f"""F.I.SH: {data['full_name']}
+            text = f"""#Kontrakt_SHARTNOMANGIZ_{formatted_contract_id}
+
+Chiqartirib oling📥📠
+
+F.I.SH: {data['full_name']}
 Telefon raqam: {data['phone']}
 Ta'lim yo'nalishi: {data['edu_major']}"""
 
@@ -167,8 +174,6 @@ Ta'lim yo'nalishi: {data['edu_major']}"""
         await bot.send_message(message.chat.id, "Shartnoma yuborilmoqda ....")
         await ChatActions.upload_document()
 
-        with open(f'{os.path.abspath("contract_id.txt")}', 'r') as f:
-            contract_id = f.read()
         with open(f'{os.path.abspath("contract_id.txt")}', 'w') as f:
             f.write(f'{int(contract_id)+1}')
         if data["edu_state"] == "KECHKI":
@@ -180,7 +185,6 @@ Ta'lim yo'nalishi: {data['edu_major']}"""
         else:
             edu_duration = '4,5 yil (2028-yil yakunlanadi)'
 
-        formatted_contract_id = str(int(contract_id)+1).zfill(7)
         fee = contract_fee[data['edu_major']][data['edu_state']]
 
         rendered_html = template.render(
@@ -197,7 +201,7 @@ Ta'lim yo'nalishi: {data['edu_major']}"""
         pdf = HTML(string=rendered_html, base_url=base_url).write_pdf()
 
         # Save the PDF to a file
-        pdf_file_path = f"kontrakt_{formatted_contract_id}.pdf"
+        pdf_file_path = f"shartnoma_{formatted_contract_id}.pdf"
         with open(pdf_file_path, "wb") as f:
             f.write(pdf)
 
