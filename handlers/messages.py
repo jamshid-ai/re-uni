@@ -4,6 +4,7 @@ from aiogram import types
 from aiogram.dispatcher.filters import Text
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
+from aiogram.types import ContentType
 
 from loader import dp, bot
 from buttons import Keyboards
@@ -16,14 +17,25 @@ class SendMessages(StatesGroup):
 
 admins = os.getenv("ADMINS")
 
-async def send_to_all(contacts, message):
+async def send_to_all(contacts, message, file_id=None,photo=None,video=None):
     for index, contact in enumerate(contacts):
         if index % 25 == 0:
             time.sleep(1)
-        try:
-            await bot.send_message(contact[3], message)
-        except:
-            pass
+        if not photo and not video:
+            try:
+                await bot.send_message(contact[3], message)
+            except:
+                pass
+        elif photo:
+            try:
+                await bot.send_photo(contact[3], photo=file_id, caption=message)
+            except:
+                pass
+        elif video:
+            try:
+                await bot.send_video(contact[3], video=file_id, caption=message)
+            except:
+                pass
     
 
 @dp.message_handler(commands='send_message')
@@ -36,15 +48,29 @@ async def send_message(message: types.Message,
         await message.answer('You dont have enough permission')
 
 
-@dp.message_handler(state=SendMessages.message)
+@dp.message_handler(state=SendMessages.message,
+                    content_types=[ContentType.PHOTO, ContentType.VIDEO, ContentType.TEXT])
 async def recieve_message(message: types.Message,
                           state: FSMContext):
-    async with state.proxy() as data:
-        data['message'] = message.text
-    await message.answer("Juda yaxshi) Quyidagi xabarni tasqidlang..")
     kb = await Keyboards.message_confirm()
-    await message.answer(message.text, reply_markup=kb)
-    await state.finish()
+    if message.content_type == 'text':
+        await message.answer("Juda yaxshi) Quyidagi xabarni tasqidlang..")
+        await message.answer(message.text, reply_markup=kb)
+        await state.finish()
+    elif message.content_type == 'photo':
+        await message.answer("Juda yaxshi) Quyidagi xabarni tasqidlang..")
+        await bot.send_photo(message.chat.id,
+                             photo=message.photo[0].file_id,
+                             caption=message.caption,
+                             reply_markup=kb)
+        await state.finish()
+    elif message.content_type == 'video':
+        await message.answer("Juda yaxshi) Quyidagi xabarni tasqidlang..")
+        await bot.send_video(message.chat.id,
+                             video=message.video.file_id,
+                             caption=message.caption,
+                             reply_markup=kb)
+        await state.finish()
 
 
 @dp.callback_query_handler(text='ok')
@@ -52,7 +78,14 @@ async def confirmed_message(call_data: types.callback_query):
     await call_data.message.edit_reply_markup(reply_markup=None)
     await bot.send_message(call_data.message.chat.id, 'Xabar yuborilmoqda..')
     contacts = get_all_users()
-    await send_to_all(contacts, call_data.message.text)
+    if call_data.message.photo:
+        file_id = call_data.message.photo[0].file_id
+        await send_to_all(contacts, call_data.message.caption, photo=True, file_id=file_id)
+    elif call_data.message.video:
+        file_id = call_data.message.video.file_id
+        await send_to_all(contacts, call_data.message.caption, video=True, file_id=file_id)
+    else:
+        await send_to_all(contacts, call_data.message.text)
     await bot.send_message(call_data.message.chat.id, "Xabar hammaga yuborildi!")
 
 
