@@ -23,9 +23,6 @@ env = Environment(loader=FileSystemLoader("contract"))
 # Load the HTML template
 template = env.get_template("index.html")
 
-now = datetime.now()
-formatted_date = now.strftime("%m.%d")
-
 
 class Register(StatesGroup):
     phone = State()
@@ -189,7 +186,7 @@ Ta'lim yo'nalishi: {data['edu_major']}"""
 
         rendered_html = template.render(
             contract_id=formatted_contract_id,
-            now_date=formatted_date,
+            now_date=datetime.now().strftime("%m.%d"),
             full_name=data['full_name'],
             contract_fee=fee,
             edu_state=data['edu_state'],
