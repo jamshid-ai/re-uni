@@ -17,16 +17,17 @@ class SendMessages(StatesGroup):
 
 admins = os.getenv("ADMINS")
 
-async def send_to_all(contacts, message, file_id=None,photo=None,video=None):
+async def send_to_all(contacts, message=None,**kwargs):
+    file_id = kwargs.get('file_id')
+    photo = kwargs.get('photo')
+    video = kwargs.get('video')
+    location = kwargs.get('location')
+    longitude = kwargs.get('longitude')
+    latitude = kwargs.get('latitude')
     for index, contact in enumerate(contacts):
         if index % 25 == 0:
             time.sleep(1)
-        if not photo and not video:
-            try:
-                await bot.send_message(contact[3], message)
-            except:
-                pass
-        elif photo:
+        if photo:
             try:
                 await bot.send_photo(contact[3], photo=file_id, caption=message)
             except:
@@ -34,6 +35,18 @@ async def send_to_all(contacts, message, file_id=None,photo=None,video=None):
         elif video:
             try:
                 await bot.send_video(contact[3], video=file_id, caption=message)
+            except:
+                pass
+        elif location:
+            try:
+                await bot.send_location(chat_id=contact[3],
+                                        longitude=longitude,
+                                        latitude=latitude)
+            except:
+                pass
+        elif not photo and not video:
+            try:
+                await bot.send_message(contact[3], message)
             except:
                 pass
     
@@ -49,7 +62,7 @@ async def send_message(message: types.Message,
 
 
 @dp.message_handler(state=SendMessages.message,
-                    content_types=[ContentType.PHOTO, ContentType.VIDEO, ContentType.TEXT])
+                    content_types=[ContentType.PHOTO, ContentType.VIDEO, ContentType.TEXT, ContentType.LOCATION])
 async def recieve_message(message: types.Message,
                           state: FSMContext):
     kb = await Keyboards.message_confirm()
@@ -71,6 +84,13 @@ async def recieve_message(message: types.Message,
                              caption=message.caption,
                              reply_markup=kb)
         await state.finish()
+    elif message.content_type == 'location':
+        await message.answer("Juda yaxshi) Quyidagi xabarni tasqidlang..")
+        await bot.send_location(message.chat.id,
+                                latitude=message.location.latitude,
+                                longitude=message.location.longitude,
+                                reply_markup=kb)
+        await state.finish()
 
 
 @dp.callback_query_handler(text='ok')
@@ -84,6 +104,10 @@ async def confirmed_message(call_data: types.callback_query):
     elif call_data.message.video:
         file_id = call_data.message.video.file_id
         await send_to_all(contacts, call_data.message.caption, video=True, file_id=file_id)
+    elif call_data.message.location:
+        longitude = call_data.message.location.longitude
+        latitude = call_data.message.location.latitude
+        await send_to_all(contacts, location=True, longitude=longitude, latitude=latitude)
     else:
         await send_to_all(contacts, call_data.message.text)
     await bot.send_message(call_data.message.chat.id, "Xabar hammaga yuborildi!")
